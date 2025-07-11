@@ -19,7 +19,7 @@ if (user.value) {
   navigateTo("/confirm");
 }
 
-function validateForm() {
+async function validateForm(sb) {
   let isValid = true;
 
   unErr.value = null;
@@ -31,10 +31,25 @@ function validateForm() {
   if (un.value.length == 0) {
     unErr.value = "Username cannot be empty";
     isValid = false;
+  } else {
+    let { data } = await sb.from("profiles").select("user_id").eq("username", un.value).maybeSingle() 
+    if ( data != null) {
+      unErr.value = "The username has already been taken";
+      isValid = false;
+    }
   }
   if (email.value.length == 0) {
     emailErr.value = "Email cannot be empty";
     isValid = false;
+  } else {
+    let { data } = await sb
+      .rpc('user_exists', {
+        email: email.value
+      });
+    if (data) {
+      emailErr.value = "This email address is already associated with a different account";
+      isValid = false;
+    }
   }
   if (instiEmail.value.length == 0) {
     insMailErr.value = "Institute email cannot be empty";
@@ -44,6 +59,11 @@ function validateForm() {
       insMailErr.value = "Institute email does not seem to be valid";
       isValid = false;
     }
+    let {data} = await sb.from("profiles").select("user_id").eq("institute_email", instiEmail.value).maybeSingle() 
+    if (data != null) {
+        insMailErr.value = "This email address is already associated with a different account";
+        isValid = false;
+      }
   }
   if (pw.value.length < 8) {
     pwErr.value = "Password must be 8 characters long";
@@ -59,9 +79,9 @@ function validateForm() {
 }
 
 async function submitForm() {
-  if (!validateForm()) return;
-  /*
   const sb = useSupabaseClient();
+  if (! await validateForm(sb)) return;
+
   let { error } = await sb.auth.signUp({
     email: email.value,
     password: pw.value,
@@ -73,6 +93,7 @@ async function submitForm() {
       },
     },
   });
+
   if (!error) {
     un.value = "";
     email.value = "";
@@ -80,8 +101,9 @@ async function submitForm() {
     pw.value = "";
     cpw.value = "";
     showSuccess.value = true;
+  } else {
+    console.log(error);
   }
-  */
 }
 </script>
 
