@@ -3,7 +3,7 @@ const props = defineProps<{
   name: string;
   code: string;
   dept: string;
-  rating: double;
+  rating: number;
 }>();
 </script>
 
@@ -29,13 +29,14 @@ const props = defineProps<{
         <span>{{ props.dept }}</span>
       </p>
     </div>
-    <button
-      class="bg-indigo-400 hover:bg-indigo-400/90 h-10 rounded-md px-3 text-white"
-    >
-      <NuxtLink :to="`/course/${code}`" class="h-full flex items-center">
+    <Button>
+      <NuxtLink
+        :to="`/course/${code}`"
+        class="flex justify-center items-center px-4"
+      >
         View
         <Icon name="lucide:chevron-right" />
       </NuxtLink>
-    </button>
+    </Button>
   </div>
 </template>

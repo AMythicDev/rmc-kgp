@@ -32,8 +32,12 @@ async function validateForm(sb) {
     unErr.value = "Username cannot be empty";
     isValid = false;
   } else {
-    let { data } = await sb.from("profiles").select("user_id").eq("username", un.value).maybeSingle() 
-    if ( data != null) {
+    let { data } = await sb
+      .from("profiles")
+      .select("user_id")
+      .eq("username", un.value)
+      .maybeSingle();
+    if (data != null) {
       unErr.value = "The username has already been taken";
       isValid = false;
     }
@@ -42,12 +46,12 @@ async function validateForm(sb) {
     emailErr.value = "Email cannot be empty";
     isValid = false;
   } else {
-    let { data } = await sb
-      .rpc('user_exists', {
-        email: email.value
-      });
+    let { data } = await sb.rpc("user_exists", {
+      email: email.value,
+    });
     if (data) {
-      emailErr.value = "This email address is already associated with a different account";
+      emailErr.value =
+        "This email address is already associated with a different account";
       isValid = false;
     }
   }
@@ -59,11 +63,16 @@ async function validateForm(sb) {
       insMailErr.value = "Institute email does not seem to be valid";
       isValid = false;
     }
-    let {data} = await sb.from("profiles").select("user_id").eq("institute_email", instiEmail.value).maybeSingle() 
+    let { data } = await sb
+      .from("profiles")
+      .select("user_id")
+      .eq("institute_email", instiEmail.value)
+      .maybeSingle();
     if (data != null) {
-        insMailErr.value = "This email address is already associated with a different account";
-        isValid = false;
-      }
+      insMailErr.value =
+        "This email address is already associated with a different account";
+      isValid = false;
+    }
   }
   if (pw.value.length < 8) {
     pwErr.value = "Password must be 8 characters long";
@@ -80,7 +89,7 @@ async function validateForm(sb) {
 
 async function submitForm() {
   const sb = useSupabaseClient();
-  if (! await validateForm(sb)) return;
+  if (!(await validateForm(sb))) return;
 
   let { error } = await sb.auth.signUp({
     email: email.value,
