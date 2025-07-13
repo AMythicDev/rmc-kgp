@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import AddReview from "../../components/AddReview.vue";
+import { ModalsContainer, useModal } from "vue-final-modal";
+
 const { id } = useRoute().params;
 const sb = useSupabaseClient();
 const user = useSupabaseUser();
@@ -19,13 +22,21 @@ const goToLogin = () => {
   redirectInfo.path.value = `/course/${id}`;
   navigateTo("/login");
 };
+
+const { open: addReviewDialog, close } = useModal({
+  component: AddReview,
+});
 </script>
 
 <template>
-  <section class="flex bg-white shadow-sm rounded-md h-60 p-12" v-if="course">
-    <div class="border-r border-r-gray-400 pr-6 flex flex-col justify-center">
+  <section
+    class="flex bg-white dark:bg-zinc-800 shadow-sm rounded-md h-60 p-12"
+    v-if="course"
+  >
+    <div
+      class="border-r border-r-gray-400 dark:border-r-zinc-500 pr-6 flex flex-col justify-center"
+    >
       <NuxtRating
-        read-only
         active-color="#7c86ff"
         rating-size="30"
         :rating-value="5"
@@ -59,7 +70,7 @@ const goToLogin = () => {
     <ReviewCard v-else-if="!myReview">
       <div class="flex flex-col justify-center items-center flex-1 gap-2">
         <p>Add your review for this course</p>
-        <Button class="px-3 flex items-center gap-1">
+        <Button @click="addReviewDialog" class="px-3 flex items-center gap-1">
           <Icon name="lucide:plus" />
           Add Review
         </Button>
@@ -69,4 +80,5 @@ const goToLogin = () => {
       <h2 class="text-2xl font-semibold mt-5">Other Reviews</h2>
     </div>
   </section>
+  <ModalsContainer />
 </template>

@@ -66,7 +66,10 @@ const signin = async () => {
   </div>
 
   <div class="flex justify-center items-center min-h-[calc(100vh-14rem)]">
-    <form class="bg-white w-[30rem] p-12 shadow-md" @submit.prevent="signin">
+    <form
+      class="bg-white dark:bg-zinc-800 w-[30rem] p-12 shadow-md"
+      @submit.prevent="signin"
+    >
       <h1 class="font-bold text-3xl mb-6">Sign In</h1>
 
       <label class="text-sm block" for="username">Email</label>

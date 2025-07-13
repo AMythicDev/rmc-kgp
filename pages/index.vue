@@ -14,7 +14,7 @@ const { data: popular } = await useAsyncData("popular", async () => {
     <h1 class="font-bold text-4xl">Rate My Course KGP</h1>
     <div class="h-12 w-3/4 flex">
       <input
-        class="bg-gray-200 px-4 flex-1 rounded-lg rounded-r-none border-2 border-r-0 border-gray-400 outline-none"
+        class="bg-gray-200 dark:bg-zinc-800 px-4 flex-1 rounded-lg rounded-r-none border-2 border-r-0 border-gray-400 dark:border-zinc-700 outline-none"
         type="text"
         placeholder="Enter course name or course code"
       />

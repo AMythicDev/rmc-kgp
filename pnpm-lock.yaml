@@ -28,6 +28,9 @@ importers:
       vue:
         specifier: ^3.5.17
         version: 3.5.17(typescript@5.8.3)
+      vue-final-modal:
+        specifier: ^4.5.5
+        version: 4.5.5(@vueuse/core@13.5.0(vue@3.5.17(typescript@5.8.3)))(@vueuse/integrations@13.5.0(focus-trap@7.6.5)(fuse.js@7.1.0)(jwt-decode@4.0.0)(vue@3.5.17(typescript@5.8.3)))(focus-trap@7.6.5)(vue@3.5.17(typescript@5.8.3))
       vue-router:
         specifier: ^4.5.1
         version: 4.5.1(vue@3.5.17(typescript@5.8.3))
@@ -1886,6 +1889,12 @@ packages:
         integrity: sha512-6WaYesThRMCl19iryMYP7/x2OVgCtbIVflDGFpWnb9irXI3UjYE4AzmYuiUKY1AJstGijoY+MgUszMgRxIYTYw==,
       }
 
+  "@types/web-bluetooth@0.0.21":
+    resolution:
+      {
+        integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==,
+      }
+
   "@types/ws@8.18.1":
     resolution:
       {
@@ -2134,6 +2143,73 @@ packages:
       {
         integrity: sha512-uumf1v6TxseOl3n5Zp+aFCFoBEEpu96r2acPO4chFJAKia8be8kTgomP4tWZDOMn/YwFF7L9rk3bNle8cFqSEw==,
       }
+
+  "@vueuse/core@13.5.0":
+    resolution:
+      {
+        integrity: sha512-wV7z0eUpifKmvmN78UBZX8T7lMW53Nrk6JP5+6hbzrB9+cJ3jr//hUlhl9TZO/03bUkMK6gGkQpqOPWoabr72g==,
+      }
+    peerDependencies:
+      vue: ^3.5.0
+
+  "@vueuse/integrations@13.5.0":
+    resolution:
+      {
+        integrity: sha512-7RACJySnlpl0MkSzxbtadioNGSX4TL5/Wl2cUy4nDq/XkeHwPYvVM880HJUSiap/FXhVEup9VKTM9y/n5UspAw==,
+      }
+    peerDependencies:
+      async-validator: ^4
+      axios: ^1
+      change-case: ^5
+      drauu: ^0.4
+      focus-trap: ^7
+      fuse.js: ^7
+      idb-keyval: ^6
+      jwt-decode: ^4
+      nprogress: ^0.2
+      qrcode: ^1.5
+      sortablejs: ^1
+      universal-cookie: ^7 || ^8
+      vue: ^3.5.0
+    peerDependenciesMeta:
+      async-validator:
+        optional: true
+      axios:
+        optional: true
+      change-case:
+        optional: true
+      drauu:
+        optional: true
+      focus-trap:
+        optional: true
+      fuse.js:
+        optional: true
+      idb-keyval:
+        optional: true
+      jwt-decode:
+        optional: true
+      nprogress:
+        optional: true
+      qrcode:
+        optional: true
+      sortablejs:
+        optional: true
+      universal-cookie:
+        optional: true
+
+  "@vueuse/metadata@13.5.0":
+    resolution:
+      {
+        integrity: sha512-euhItU3b0SqXxSy8u1XHxUCdQ8M++bsRs+TYhOLDU/OykS7KvJnyIFfep0XM5WjIFry9uAPlVSjmVHiqeshmkw==,
+      }
+
+  "@vueuse/shared@13.5.0":
+    resolution:
+      {
+        integrity: sha512-K7GrQIxJ/ANtucxIXbQlUHdB0TPA8c+q5i+zbrjxuhJCnJ9GtBg75sBSnvmLSxHKPg2Yo8w62PWksl9kwH0Q8g==,
+      }
+    peerDependencies:
+      vue: ^3.5.0
 
   "@whatwg-node/disposablestack@0.0.6":
     resolution:
@@ -3413,6 +3489,12 @@ packages:
     resolution:
       {
         integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==,
+      }
+
+  focus-trap@7.6.5:
+    resolution:
+      {
+        integrity: sha512-7Ke1jyybbbPZyZXFxEftUtxFGLMpE2n6A+z//m4CRDlj0hW+o3iYSmh8nFlYMurOiJVDmJRilUQtJr08KfIxlg==,
       }
 
   foreground-child@3.3.1:
@@ -5837,6 +5919,12 @@ packages:
       }
     engines: { node: ">=18" }
 
+  tabbable@6.2.0:
+    resolution:
+      {
+        integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==,
+      }
+
   tailwindcss@4.1.11:
     resolution:
       {
@@ -6365,6 +6453,17 @@ packages:
       {
         integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==,
       }
+
+  vue-final-modal@4.5.5:
+    resolution:
+      {
+        integrity: sha512-A6xgsXqE6eLw9e6Tq/W6pxDBmimPuSuvq20WL9TOZpZy7itPdGeNn8e1P15PCGqP2yHM3q2gJIchPY9ZJd8YsA==,
+      }
+    peerDependencies:
+      "@vueuse/core": ">=10.0.0"
+      "@vueuse/integrations": ">=10.0.0"
+      focus-trap: ">=7.2.0"
+      vue: ">=3.2.0"
 
   vue-router@4.5.1:
     resolution:
@@ -7774,6 +7873,8 @@ snapshots:
 
   "@types/triple-beam@1.3.5": {}
 
+  "@types/web-bluetooth@0.0.21": {}
+
   "@types/ws@8.18.1":
     dependencies:
       "@types/node": 24.0.10
@@ -8019,6 +8120,29 @@ snapshots:
       path-browserify: 1.0.1
     transitivePeerDependencies:
       - typescript
+
+  "@vueuse/core@13.5.0(vue@3.5.17(typescript@5.8.3))":
+    dependencies:
+      "@types/web-bluetooth": 0.0.21
+      "@vueuse/metadata": 13.5.0
+      "@vueuse/shared": 13.5.0(vue@3.5.17(typescript@5.8.3))
+      vue: 3.5.17(typescript@5.8.3)
+
+  "@vueuse/integrations@13.5.0(focus-trap@7.6.5)(fuse.js@7.1.0)(jwt-decode@4.0.0)(vue@3.5.17(typescript@5.8.3))":
+    dependencies:
+      "@vueuse/core": 13.5.0(vue@3.5.17(typescript@5.8.3))
+      "@vueuse/shared": 13.5.0(vue@3.5.17(typescript@5.8.3))
+      vue: 3.5.17(typescript@5.8.3)
+    optionalDependencies:
+      focus-trap: 7.6.5
+      fuse.js: 7.1.0
+      jwt-decode: 4.0.0
+
+  "@vueuse/metadata@13.5.0": {}
+
+  "@vueuse/shared@13.5.0(vue@3.5.17(typescript@5.8.3))":
+    dependencies:
+      vue: 3.5.17(typescript@5.8.3)
 
   "@whatwg-node/disposablestack@0.0.6":
     dependencies:
@@ -8767,6 +8891,10 @@ snapshots:
       unicorn-magic: 0.1.0
 
   fn.name@1.1.0: {}
+
+  focus-trap@7.6.5:
+    dependencies:
+      tabbable: 6.2.0
 
   foreground-child@3.3.1:
     dependencies:
@@ -10327,6 +10455,8 @@ snapshots:
 
   system-architecture@0.1.0: {}
 
+  tabbable@6.2.0: {}
+
   tailwindcss@4.1.11: {}
 
   tapable@2.2.2: {}
@@ -10644,6 +10774,13 @@ snapshots:
       ufo: 1.6.1
 
   vue-devtools-stub@0.1.0: {}
+
+  vue-final-modal@4.5.5(@vueuse/core@13.5.0(vue@3.5.17(typescript@5.8.3)))(@vueuse/integrations@13.5.0(focus-trap@7.6.5)(fuse.js@7.1.0)(jwt-decode@4.0.0)(vue@3.5.17(typescript@5.8.3)))(focus-trap@7.6.5)(vue@3.5.17(typescript@5.8.3)):
+    dependencies:
+      "@vueuse/core": 13.5.0(vue@3.5.17(typescript@5.8.3))
+      "@vueuse/integrations": 13.5.0(focus-trap@7.6.5)(fuse.js@7.1.0)(jwt-decode@4.0.0)(vue@3.5.17(typescript@5.8.3))
+      focus-trap: 7.6.5
+      vue: 3.5.17(typescript@5.8.3)
 
   vue-router@4.5.1(vue@3.5.17(typescript@5.8.3)):
     dependencies:

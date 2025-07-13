@@ -8,10 +8,13 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="bg-white flex p-4 shadow-sm rounded-md items-center">
-    <div class="border-r border-r-gray-400 pr-2 flex flex-col justify-center">
+  <div
+    class="bg-white dark:bg-zinc-800 flex p-4 shadow-sm rounded-md items-center"
+  >
+    <div
+      class="border-r border-r-gray-400 dark:border-r-zinc-500 pr-2 flex flex-col justify-center"
+    >
       <NuxtRating
-        read-only
         active-color="#7c86ff"
         rating-size="20"
         :rating-value="props.rating"

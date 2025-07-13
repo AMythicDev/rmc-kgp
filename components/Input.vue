@@ -2,11 +2,13 @@
 const {
   type = "text",
   error = null,
+  class: className,
   ...props
 } = defineProps<{
-  placeholder: string;
+  placeholder?: string;
   id: string;
   type?: string;
+  class?: string;
   error?: string | null;
 }>();
 
@@ -15,7 +17,7 @@ const model = defineModel();
 
 <template>
   <input
-    :class="`bg-gray-100 transition-colors px-2 py-1 block w-full border-2 ${error != null ? 'border-red-400' : 'border-gray-400 mb-4'} focus:border-indigo-400 outline-none`"
+    :class="`bg-gray-100 dark:bg-zinc-700 transition-colors px-2 py-1 block w-full border-2 ${error != null ? 'border-red-400' : 'border-gray-400 dark:border-zinc-600 mb-4'} focus:border-indigo-400 outline-none ${className}`"
     :placeholder="props.placeholder"
     :id="props.id"
     :type="type"

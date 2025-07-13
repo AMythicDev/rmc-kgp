@@ -133,7 +133,7 @@ async function submitForm() {
   </div>
   <div class="flex justify-center items-center">
     <form
-      class="w-[30rem] p-12 shadow-md bg-white"
+      class="w-[30rem] p-12 shadow-md bg-white dark:bg-zinc-800"
       @submit.prevent="submitForm"
     >
       <h1 class="font-bold text-3xl mb-6">Sign Up</h1>
