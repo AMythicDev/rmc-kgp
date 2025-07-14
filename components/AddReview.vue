@@ -1,7 +1,41 @@
 <script setup lang="ts">
 import { VueFinalModal } from "vue-final-modal";
 
-const rating = useState(() => 0);
+const { update, ...props } = defineProps<{
+  course_code: string;
+  user_id: string;
+  update?: any;
+}>();
+
+const sb = useSupabaseClient();
+const profs = useState(() => (update ? update.profs : ""));
+const grading = useState(() => (update ? update.grading : 0));
+const workload = useState(() => (update ? update.workload : 5));
+const body = useState(() => (update ? update.body : ""));
+const semester = useState(() => "Automn 2024");
+
+const emit = defineEmits<{
+  (e: "confirm", review: any): void;
+  (e: "exit"): void;
+}>();
+
+const addReview = async () => {
+  let { data } = await sb
+    .from("reviews")
+    .upsert({
+      id: update ? update.id : undefined,
+      course: props.course_code,
+      user_id: props.user_id,
+      profs: [profs.value],
+      semester: semester.value,
+      grading: grading.value,
+      workload: workload.value,
+      body: body.value,
+    })
+    .select("id, profs, grading, semester, workload, body, profiles (username)")
+    .single();
+  emit("confirm", data);
+};
 </script>
 
 <template>
@@ -11,24 +45,39 @@ const rating = useState(() => 0);
   >
     <form class="flex flex-col gap-5 h-[90%]">
       <div class="flex justify-between mb-6">
-        <h1 class="text-2xl font-semibold">Add Your Review</h1>
-        <Icon name="lucide:x" size="1.5em" />
+        <h1 class="text-2xl font-semibold">
+          <template v-if="update">Update</template>
+          <template v-else> Add</template>
+          Your Review
+        </h1>
+        <button @click.prevent="emit('exit')" class="cursor-pointer">
+          <Icon name="lucide:x" size="1.5em" />
+        </button>
       </div>
       <div class="flex justify-between">
         <div>
-          <Label class="!text-base">Enter name of your professor(s)</Label>
-          <Label class="text-gray-400 dark:text-zinc-500"
+          <Label for="profs" class="!text-base"
+            >Enter name of your professor(s)</Label
+          >
+          <Label for="profs" class="text-gray-400 dark:text-zinc-500"
             >Separate by comma(,) if multiple</Label
           >
         </div>
-        <Input class="h-10 !w-96 !mb-0" />
+        <Input id="profs" v-model="profs" class="h-10 !w-96 !mb-0 rounded-md" />
       </div>
 
       <div class="flex justify-between items-center">
         <Label class="!text-base"
           >How would you rate the overall grading of the course</Label
         >
-        <NuxtRating active-color="#7c86ff" rating-size="20" :rating-step="1" :rating-value="rating" :read-only="false" @rating-selected="(n) => console.log(n)" />
+        <NuxtRating
+          active-color="#7c86ff"
+          rating-size="20"
+          :rating-step="1"
+          :rating-value="grading"
+          :read-only="false"
+          @rating-selected="(n) => (grading = n)"
+        />
       </div>
 
       <div class="flex justify-between items-center">
@@ -43,17 +92,11 @@ const rating = useState(() => 0);
         </div>
         <select
           class="border border-gray-400 dark:border-zinc-600 p-2 outline-none"
+          v-model="workload"
         >
-          <option class="dark:bg-zinc-700">1</option>
-          <option class="dark:bg-zinc-700">2</option>
-          <option class="dark:bg-zinc-700">3</option>
-          <option class="dark:bg-zinc-700">4</option>
-          <option class="dark:bg-zinc-700">5</option>
-          <option class="dark:bg-zinc-700">6</option>
-          <option class="dark:bg-zinc-700">7</option>
-          <option class="dark:bg-zinc-700">8</option>
-          <option class="dark:bg-zinc-700">9</option>
-          <option class="dark:bg-zinc-700">10</option>
+          <option v-for="n in 10" :key="n" class="dark:bg-zinc-700" :value="n">
+            {{ n }}
+          </option>
         </select>
       </div>
 
@@ -64,14 +107,24 @@ const rating = useState(() => 0);
           your juniors</Label
         >
         <div class="flex justify-center">
-        <textarea class="border-2 border-gray-400 dark:border-zinc-600 bg-gray-200 dark:bg-zinc-700 w-3/4 h-72 outline-none mt-2 p-2"></textarea>
+          <textarea
+            v-model="body"
+            class="border-2 border-gray-400 dark:border-zinc-600 bg-gray-200 dark:bg-zinc-700 w-3/4 h-72 rounded-md outline-none mt-2 p-2"
+          ></textarea>
         </div>
       </div>
 
       <div class="flex w-full justify-end">
-        <Button class="px-3 flex items-center gap-1">
-          <Icon name="lucide:plus" />
-          Add Review
+        <Button @click.prevent="addReview" class="px-3 flex items-center gap-1">
+          <template v-if="update">
+            <Icon name="lucide:refresh-ccw-dot" />
+            Update
+          </template>
+          <template v-else>
+            <Icon name="lucide:plus" />
+            Add</template
+          >
+          Review
         </Button>
       </div>
     </form>

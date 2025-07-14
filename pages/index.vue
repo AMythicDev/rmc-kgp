@@ -12,7 +12,7 @@ const { data: popular } = await useAsyncData("popular", async () => {
 <template>
   <div class="flex flex-col gap-5 items-center">
     <h1 class="font-bold text-4xl">Rate My Course KGP</h1>
-    <div class="h-12 w-3/4 flex">
+    <div class="h-12 w-full lg:w-3/4 flex">
       <input
         class="bg-gray-200 dark:bg-zinc-800 px-4 flex-1 rounded-lg rounded-r-none border-2 border-r-0 border-gray-400 dark:border-zinc-700 outline-none"
         type="text"
@@ -24,7 +24,7 @@ const { data: popular } = await useAsyncData("popular", async () => {
         <Icon name="lucide:search" /> Search
       </button>
     </div>
-    <div class="w-3/4 mt-10">
+    <div class="w-full lg:w-3/4 mt-10">
       <h2 class="font-bold text-3xl mb-4">Popular Courses</h2>
       <div class="flex flex-col gap-3">
         <CourseCard
