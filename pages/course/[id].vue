@@ -32,7 +32,7 @@ if (user.value) {
     const { data } = await sb
       .from("reviews")
       .select(
-        "id, profs, grading, semester, workload, body, profiles (username)",
+        "id, profs, grading, semester, year, workload, body, profiles (username)",
       )
       .eq("user_id", user.value.id)
       .maybeSingle();
@@ -45,7 +45,7 @@ otherReviews.value = useAsyncData(`otherReviewsData:${id}`, async () => {
   const query = sb
     .from("reviews")
     .select(
-      "id, profs, grading, semester, workload, body, profiles (username)",
+      "id, profs, grading, semester, year, workload, body, profiles (username)",
     );
   if (user.value) {
     query.neq("user_id", user.value.id);
@@ -92,16 +92,21 @@ const deletedReview = () => {
 <template>
   <section
     class="flex bg-white dark:bg-zinc-800 shadow-sm rounded-md min-h-60 p-12"
-    v-if="course"
   >
     <div
       class="border-r border-r-gray-400 dark:border-r-zinc-500 pr-6 flex flex-col justify-center"
+      v-if="course"
     >
       <NuxtRating active-color="#7c86ff" rating-size="30" :rating-value="5" />
       <p class="text-center text-sm">{{ 5 }} / 5</p>
     </div>
+    <div v-else
+      class="border-r border-r-gray-400 dark:border-r-zinc-500 pr-6 flex flex-col justify-center"
+      >
+      <NuxtRating active-color="#7c86ff" inactive-color="#71717b" rating-size="30" :rating-value="0" />
+    </div>
     <div>
-      <div class="pl-8 flex-1">
+      <div class="pl-8 flex-1" v-if="course">
         <p class="text-3xl font-extrabold mb-3">{{ course.name }}</p>
         <p class="mb-1">
           <span class="mr-2">Course Code:</span>
@@ -112,6 +117,12 @@ const deletedReview = () => {
           <span>{{ course.dept }}</span>
         </p>
         <p>{{ numReviews }} Reviews</p>
+      </div>
+      <div class="pl-8 flex-1" v-else>
+        <p class="bg-zinc-700 w-96 h-10 rounded-full mb-3"></p>
+        <p class="bg-zinc-700 w-32 h-4 rounded-full mb-2.5"></p>
+        <p class="bg-zinc-700 w-72 h-4 rounded-full mb-2.5"></p>
+        <p class="bg-zinc-700 w-24 h-4 rounded-full"></p>
       </div>
     </div>
   </section>

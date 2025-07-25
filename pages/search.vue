@@ -1,25 +1,36 @@
 <script setup lang="ts">
+const route = useRoute();
 const sb = useSupabaseClient();
 
 definePageMeta({
   layout: "home",
 });
 
-const { data: popular } = await useAsyncData("popular", async () => {
+const { data: results } = await useAsyncData(`search`, async () => {
   const { data } = await sb
     .from("courses")
     .select("name, code, dept")
-    .limit(15);
+    .or(`code.ilike.%${route.query.term}%, name.ilike.%${route.query.term}%`);
   return data;
 });
+
+watch(
+  route,
+  async () => {
+    await refreshNuxtData([`search`]);
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
   <div class="w-full lg:w-3/4 mt-10">
-    <h2 class="font-bold text-3xl mb-4">Popular Courses</h2>
+    <h2 class="font-bold text-3xl mb-4">
+      Search Results for '{{ route.query.term }}'
+    </h2>
     <div class="flex flex-col gap-3">
       <CourseCard
-        v-for="c in popular"
+        v-for="c in results"
         :name="c.name"
         :code="c.code"
         :dept="c.dept"

@@ -11,7 +11,7 @@ export default defineNuxtConfig({
   modules: ["nuxt-rating", "@nuxtjs/supabase", "@nuxt/icon"],
   supabase: {
     redirectOptions: {
-      exclude: ["/", "/signup", "/about", "/course/*"],
+      exclude: ["/", "/signup", "/about", "/course/*", "/search"],
       saveRedirectToCookie: true,
     },
   },

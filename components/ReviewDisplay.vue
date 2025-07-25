@@ -57,7 +57,7 @@ const deleteReview = () => {
         {{ review.profiles.username }}
       </p>
       <p class="text-sm text-gray-400 dark:text-zinc-500">
-        {{ review.semester }}
+        {{ review.semester }} {{ review.year }}
       </p>
     </div>
     <div v-if="my">

@@ -8,11 +8,29 @@ const { update, ...props } = defineProps<{
 }>();
 
 const sb = useSupabaseClient();
-const profs = useState(() => (update ? update.profs : ""));
-const grading = useState(() => (update ? update.grading : 0));
-const workload = useState(() => (update ? update.workload : 5));
-const body = useState(() => (update ? update.body : ""));
-const semester = useState(() => "Automn 2024");
+const profs = ref(update ? update.profs : "");
+const grading = ref(update ? update.grading : 0);
+const workload = ref(update ? update.workload : 5);
+const body = ref(update ? update.body : "");
+
+const date = new Date();
+const month = date.getMonth();
+let year = date.getFullYear();
+
+let [stsem, styear] = startSemesterYear(month, year);
+const sem_options: string[] = [];
+
+for (let i = 0; i < 6; i++) {
+  sem_options.push(`${semesterToString(stsem)} ${styear}`);
+  if (stsem == Semester.Automn) {
+    stsem = Semester.Spring;
+  } else {
+    stsem = Semester.Automn;
+    styear -= 1;
+  }
+}
+
+const semester = ref(sem_options[0]);
 
 const emit = defineEmits<{
   (e: "confirm", review: any): void;
@@ -20,25 +38,32 @@ const emit = defineEmits<{
 }>();
 
 const addReview = async () => {
+  const [sem, year] = semester.value.split(" ");
+  let yearInt = parseInt(year);
+
   let { data } = await sb
     .from("reviews")
     .upsert({
       id: update ? update.id : undefined,
       course: props.course_code,
       user_id: props.user_id,
-      profs: [profs.value],
-      semester: semester.value,
+      profs: profs.value.split(","),
+      semester: sem,
+      year: yearInt,
       grading: grading.value,
       workload: workload.value,
       body: body.value,
     })
-    .select("id, profs, grading, semester, workload, body, profiles (username)")
+    .select(
+      "id, profs, grading, semester, year, workload, body, profiles (username)",
+    )
     .single();
   emit("confirm", data);
 };
 </script>
 
 <template>
+  <ClientOnly>
   <VueFinalModal
     class="flex justify-center items-center"
     content-class="flex flex-col !w-3/4 p-6 bg-white dark:bg-zinc-800 border dark:border-zinc-700 rounded-md space-y-2 bg-black"
@@ -53,6 +78,23 @@ const addReview = async () => {
         <button @click.prevent="emit('exit')" class="cursor-pointer">
           <Icon name="lucide:x" size="1.5em" />
         </button>
+      </div>
+      <div class="flex justify-between">
+        <Label for="semester" class="!text-base">Semester</Label>
+        <select
+          class="border border-gray-400 dark:border-zinc-600 p-2 outline-none"
+          id="semester"
+          v-model="semester"
+        >
+          <option
+            v-for="s in sem_options"
+            :key="s"
+            class="dark:bg-zinc-700"
+            :value="s"
+          >
+            {{ s }}
+          </option>
+        </select>
       </div>
       <div class="flex justify-between">
         <div>
@@ -129,4 +171,5 @@ const addReview = async () => {
       </div>
     </form>
   </VueFinalModal>
+  </ClientOnly>
 </template>
