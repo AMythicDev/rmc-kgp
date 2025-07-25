@@ -18,6 +18,24 @@ const numReviews = computed(() => {
   }
 });
 
+const { data: avg_grading } = useAsyncData(`avg_grading:${id}`, async () => {
+  const { data } = await sb
+    .from("reviews")
+    .select("course, grading.avg()")
+    .eq("course", id)
+    .maybeSingle();
+  return data.avg;
+});
+
+const { data: avg_workload } = useAsyncData(`avg_workload:${id}`, async () => {
+  const { data } = await sb
+    .from("reviews")
+    .select("course, workload.avg()")
+    .eq("course", id)
+    .maybeSingle();
+  return data.avg;
+});
+
 const { data: course } = useAsyncData(`course:${id}`, async () => {
   const { data } = await sb
     .from("courses")
@@ -35,6 +53,7 @@ if (user.value) {
         "id, profs, grading, semester, year, workload, body, profiles (username)",
       )
       .eq("user_id", user.value.id)
+      .eq("course", id)
       .maybeSingle();
     return data;
   });
@@ -91,22 +110,10 @@ const deletedReview = () => {
 
 <template>
   <section
-    class="flex bg-white dark:bg-zinc-800 shadow-sm rounded-md min-h-60 p-12"
+    class="flex bg-white dark:bg-zinc-800 shadow-sm rounded-md h-64 p-12"
   >
-    <div
-      class="border-r border-r-gray-400 dark:border-r-zinc-500 pr-6 flex flex-col justify-center"
-      v-if="course"
-    >
-      <NuxtRating active-color="#7c86ff" rating-size="30" :rating-value="5" />
-      <p class="text-center text-sm">{{ 5 }} / 5</p>
-    </div>
-    <div v-else
-      class="border-r border-r-gray-400 dark:border-r-zinc-500 pr-6 flex flex-col justify-center"
-      >
-      <NuxtRating active-color="#7c86ff" inactive-color="#71717b" rating-size="30" :rating-value="0" />
-    </div>
-    <div>
-      <div class="pl-8 flex-1" v-if="course">
+    <div class="flex-1 pl-8 border-r border-r-gray-400 dark:border-r-zinc-500">
+      <div v-if="course">
         <p class="text-3xl font-extrabold mb-3">{{ course.name }}</p>
         <p class="mb-1">
           <span class="mr-2">Course Code:</span>
@@ -124,6 +131,49 @@ const deletedReview = () => {
         <p class="bg-zinc-700 w-72 h-4 rounded-full mb-2.5"></p>
         <p class="bg-zinc-700 w-24 h-4 rounded-full"></p>
       </div>
+    </div>
+
+    <div class="flex items-center pl-8 gap-6 w-[26rem]">
+      <template v-if="numReviews > 0">
+        <div class="flex flex-col items-center">
+          <p class="mb-1">Grading</p>
+          <NuxtRating
+            active-color="#7c86ff"
+            v-if="avg_grading"
+            rating-size="30"
+            :rating-value="avg_grading"
+          />
+          <NuxtRating
+            v-else
+            active-color="#7c86ff"
+            inactive-color="#71717b"
+            rating-size="30"
+            :rating-value="0"
+          />
+          <p class="text-center text-sm">{{ avg_grading }} / 5</p>
+        </div>
+        <div class="flex flex-col items-center">
+          <p class="mt-2">Workload</p>
+          <ClientOnly>
+            <VueSpeedometer
+              :segments="3"
+              :value="avg_workload ?? 0"
+              :min-value="1"
+              :segment-colors="['#05df72', '#fcc800', '#ff6467']"
+              :needle-color="'#7c86ff'"
+              :max-value="10"
+              :height="130"
+              :width="200"
+              :ring-width="20"
+            />
+          </ClientOnly>
+        </div>
+      </template>
+      <template v-else>
+        <p class="text-gray-400 dark:text-zinc-400 text-2xl">
+          Not enough data to show ratings
+        </p>
+      </template>
     </div>
   </section>
 

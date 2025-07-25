@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const email = useState(() => "");
-const pw = useState(() => "");
-const pwVisible = useState(() => false);
-const invalidLogin = useState(() => false);
+const email = ref("");
+const pw = ref("");
+const pwVisible = ref(false);
+const invalidLogin = ref(false);
 
 const user = useSupabaseUser();
 watch(
@@ -15,8 +15,8 @@ watch(
   { immediate: true },
 );
 
-const emailErr = useState<string | null>(() => null);
-const pwErr = useState<string | null>(() => null);
+const emailErr = ref<string | null>(null);
+const pwErr = ref<string | null>(null);
 
 function validateForm() {
   let isValid = true;

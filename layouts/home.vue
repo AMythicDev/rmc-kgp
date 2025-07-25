@@ -3,7 +3,8 @@ const route = useRoute();
 const search_term = useState(() => route.query.term);
 
 const search = () => {
-  if (search_term.value.length == 0) return;
+  if (search_term.value.length == 0) return navigateTo('/');
+
   navigateTo({
     path: "/search",
     query: {

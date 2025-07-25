@@ -3,7 +3,6 @@ const props = defineProps<{
   name: string;
   code: string;
   dept: string;
-  rating: number;
 }>();
 </script>
 
@@ -14,19 +13,10 @@ const props = defineProps<{
     <div
       class="border-r border-r-gray-400 dark:border-r-zinc-500 pr-2 flex flex-col justify-center"
     >
-      <NuxtRating
-        active-color="#7c86ff"
-        rating-size="20"
-        :rating-value="props.rating"
-      />
-      <p class="text-center text-sm">{{ props.rating }} / 5</p>
+      <span class="font-extrabold"> {{ props.code }} </span>
     </div>
     <div class="pl-4 flex-1">
       <p class="text-lg font-semibold mb-1">{{ props.name }}</p>
-      <p>
-        <span class="mr-2">Course Code:</span>
-        <span>{{ props.code }}</span>
-      </p>
       <p>
         <span class="mr-2">Offered by:</span>
         <span>{{ props.dept }}</span>

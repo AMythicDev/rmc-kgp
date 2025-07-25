@@ -1,18 +1,18 @@
 <script setup lang="ts">
-const pwVisible = useState("pwVisible", () => false);
+const pwVisible = ref(false);
 
-const un = useState(() => "");
-const email = useState(() => "");
-const instiEmail = useState(() => "");
-const pw = useState(() => "");
-const cpw = useState(() => "");
-const showSuccess = useState(() => false);
+const un = ref("");
+const email = ref("");
+const instiEmail = ref("");
+const pw = ref("");
+const cpw = ref("");
+const showSuccess = ref(false);
 
-const unErr = useState<null | string>(() => null);
-const emailErr = useState<null | string>(() => null);
-const insMailErr = useState<null | string>(() => null);
-const pwErr = useState<null | string>(() => null);
-const cpwErr = useState<null | string>(() => null);
+const unErr = ref<null | string>(null);
+const emailErr = ref<null | string>(null);
+const insMailErr = ref<null | string>(null);
+const pwErr = ref<null | string>(null);
+const cpwErr = ref<null | string>(null);
 
 const user = useSupabaseUser();
 if (user.value) {
