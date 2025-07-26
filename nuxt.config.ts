@@ -10,6 +10,9 @@ export default defineNuxtConfig({
   },
   modules: ["nuxt-rating", "@nuxtjs/supabase", "@nuxt/icon"],
   supabase: {
+    url: process.env.SUPABASE_DATABASE_URL,
+    key: process.env.SUPABASE_ANON_KEY,
+    serviceKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
     redirectOptions: {
       exclude: ["/", "/signup", "/about", "/course/*", "/search"],
       saveRedirectToCookie: true,
