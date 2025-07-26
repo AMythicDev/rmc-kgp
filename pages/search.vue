@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const route = useRoute();
-const sb = useSupabaseClient();
+const sb = useSupabaseClient<Database>();
 
 definePageMeta({
   layout: "home",
@@ -34,7 +34,6 @@ watch(
         :name="c.name"
         :code="c.code"
         :dept="c.dept"
-        :rating="c.rating"
       />
     </div>
   </div>

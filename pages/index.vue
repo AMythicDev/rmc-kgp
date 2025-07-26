@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const sb = useSupabaseClient();
+const sb = useSupabaseClient<Database>();
 
 definePageMeta({
   layout: "home",
@@ -23,7 +23,6 @@ const { data: popular } = await useAsyncData("popular", async () => {
         :name="c.name"
         :code="c.code"
         :dept="c.dept"
-        :rating="c.rating"
       />
     </div>
   </div>

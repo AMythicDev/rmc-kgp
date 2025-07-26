@@ -10,7 +10,7 @@ const emit = defineEmits<{
 }>();
 
 const deleteReview = async () => {
-  const sb = useSupabaseClient();
+  const sb = useSupabaseClient<Database>();
   await sb.from("reviews").delete().eq("id", props.id);
   emit("confirm");
 };

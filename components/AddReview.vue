@@ -7,7 +7,7 @@ const { update, ...props } = defineProps<{
   update?: any;
 }>();
 
-const sb = useSupabaseClient();
+const sb = useSupabaseClient<Database>();
 const profs = ref(update ? update.profs : "");
 const grading = ref(update ? update.grading : 0);
 const workload = ref(update ? update.workload : 5);

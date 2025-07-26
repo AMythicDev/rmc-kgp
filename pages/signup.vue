@@ -14,12 +14,13 @@ const insMailErr = ref<null | string>(null);
 const pwErr = ref<null | string>(null);
 const cpwErr = ref<null | string>(null);
 
+const sb = useSupabaseClient<Database>();
 const user = useSupabaseUser();
 if (user.value) {
   navigateTo("/confirm");
 }
 
-async function validateForm(sb) {
+async function validateForm() {
   let isValid = true;
 
   unErr.value = null;
@@ -88,8 +89,7 @@ async function validateForm(sb) {
 }
 
 async function submitForm() {
-  const sb = useSupabaseClient();
-  if (!(await validateForm(sb))) return;
+  if (!(await validateForm())) return;
 
   let { error } = await sb.auth.signUp({
     email: email.value,

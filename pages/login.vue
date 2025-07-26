@@ -37,7 +37,7 @@ function validateForm() {
 
 const signin = async () => {
   if (!validateForm()) return;
-  const sb = useSupabaseClient();
+  const sb = useSupabaseClient<Database>();
   const { error } = await sb.auth.signInWithPassword({
     email: email.value,
     password: pw.value,

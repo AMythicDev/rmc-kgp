@@ -2,12 +2,30 @@
 import AddReview from "~/components/AddReview.vue";
 import { ModalsContainer, useModal } from "vue-final-modal";
 
-const { id } = useRoute().params;
-const sb = useSupabaseClient();
+let id = useRoute().params.id;
+if (Array.isArray(id)) id = id[0];
+
+const sb = useSupabaseClient<Database>();
 const user = useSupabaseUser();
 
-const myReview = useState<any>(`myReview:${id}`, () => null);
-const otherReviews = useState<any>(`otherReviews:${id}`, () => null);
+interface Review {
+  id: number;
+  profs: string[];
+  semester: string;
+  year: number | null;
+  grading: number;
+  workload: number;
+  profiles: {
+    username: string;
+  };
+  body: string | null;
+}
+
+const myReview = useState<Review | null>(`myReview:${id}`, () => null);
+const otherReviews = useState<Review[] | null>(
+  `otherReviews:${id}`,
+  () => null,
+);
 const numReviews = computed(() => {
   if (myReview.value && otherReviews.value) {
     return otherReviews.value.length + 1;
@@ -24,6 +42,7 @@ const { data: avg_grading } = useAsyncData(`avg_grading:${id}`, async () => {
     .select("course, grading.avg()")
     .eq("course", id)
     .maybeSingle();
+  if (data == null) return 0;
   return data.avg;
 });
 
@@ -33,6 +52,7 @@ const { data: avg_workload } = useAsyncData(`avg_workload:${id}`, async () => {
     .select("course, workload.avg()")
     .eq("course", id)
     .maybeSingle();
+  if (data == null) return 0;
   return data.avg;
 });
 
@@ -52,12 +72,12 @@ if (user.value) {
       .select(
         "id, profs, grading, semester, year, workload, body, profiles (username)",
       )
-      .eq("user_id", user.value.id)
+      .eq("user_id", user.value!.id)
       .eq("course", id)
       .maybeSingle();
     return data;
   });
-  myReview.value = data;
+  myReview.value = data.value;
 }
 
 otherReviews.value = useAsyncData(`otherReviewsData:${id}`, async () => {
@@ -65,13 +85,14 @@ otherReviews.value = useAsyncData(`otherReviewsData:${id}`, async () => {
     .from("reviews")
     .select(
       "id, profs, grading, semester, year, workload, body, profiles (username)",
-    );
+    )
+    .eq("course", id);
   if (user.value) {
     query.neq("user_id", user.value.id);
   }
   const { data } = await query;
   return data;
-}).data;
+}).data.value;
 
 watch(
   user,
@@ -164,13 +185,14 @@ const deletedReview = () => {
               :max-value="10"
               :height="130"
               :width="200"
-              :ring-width="20"
+              :ring-width="5"
+              :needleHeightRatio="0.8"
             />
           </ClientOnly>
         </div>
       </template>
       <template v-else>
-        <p class="text-gray-400 dark:text-zinc-400 text-2xl">
+        <p class="text-gray-400 dark:text-zinc-400 text-2xl text-center">
           Not enough data to show ratings
         </p>
       </template>
