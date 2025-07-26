@@ -3,7 +3,8 @@ const route = useRoute();
 const search_term = useState(() => route.query.term);
 
 const search = () => {
-  if (search_term.value.length == 0) return navigateTo('/');
+  if (search_term.value && search_term.value.length == 0)
+    return navigateTo("/");
 
   navigateTo({
     path: "/search",
@@ -16,7 +17,7 @@ const search = () => {
 
 <template>
   <Navbar />
-  <div class="p-3 lg:p-10">
+  <div class="p-3 lg:p-10 !pt-24">
     <NuxtRouteAnnouncer />
     <div class="flex flex-col gap-5 items-center">
       <h1 class="font-bold text-4xl">Rate My Course KGP</h1>

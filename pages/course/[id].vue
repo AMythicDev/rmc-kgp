@@ -8,24 +8,42 @@ if (Array.isArray(id)) id = id[0];
 const sb = useSupabaseClient<Database>();
 const user = useSupabaseUser();
 
-interface Review {
-  id: number;
-  profs: string[];
-  semester: string;
-  year: number | null;
-  grading: number;
-  workload: number;
-  profiles: {
-    username: string;
-  };
-  body: string | null;
-}
+const course = useAsyncData(`course:${id}`, async () => {
+  const { data } = await sb
+    .from("courses")
+    .select("name, code, dept")
+    .eq("code", id)
+    .maybeSingle();
+  return data;
+}).data;
 
-const myReview = useState<Review | null>(`myReview:${id}`, () => null);
-const otherReviews = useState<Review[] | null>(
-  `otherReviews:${id}`,
-  () => null,
-);
+const myReview = useAsyncData(`myReviewData:${id}`, async () => {
+  if (!user.value) return null;
+  const { data } = await sb
+    .from("reviews")
+    .select(
+      "id, profs, grading, semester, year, workload, body, profiles (username)",
+    )
+    .eq("user_id", user.value!.id)
+    .eq("course", id)
+    .maybeSingle();
+  return data;
+}).data;
+
+const otherReviews = useAsyncData(`otherReviewsData:${id}`, async () => {
+  const query = sb
+    .from("reviews")
+    .select(
+      "id, profs, grading, semester, year, workload, body, profiles (username)",
+    )
+    .eq("course", id);
+  if (user.value) {
+    query.neq("user_id", user.value.id);
+  }
+  const { data } = await query;
+  return data;
+}).data;
+
 const numReviews = computed(() => {
   if (myReview.value && otherReviews.value) {
     return otherReviews.value.length + 1;
@@ -55,44 +73,6 @@ const { data: avg_workload } = useAsyncData(`avg_workload:${id}`, async () => {
   if (data == null) return 0;
   return data.avg;
 });
-
-const { data: course } = useAsyncData(`course:${id}`, async () => {
-  const { data } = await sb
-    .from("courses")
-    .select("name, code, dept")
-    .eq("code", id)
-    .maybeSingle();
-  return data;
-});
-
-if (user.value) {
-  const { data } = useAsyncData(`myReviewData:${id}`, async () => {
-    const { data } = await sb
-      .from("reviews")
-      .select(
-        "id, profs, grading, semester, year, workload, body, profiles (username)",
-      )
-      .eq("user_id", user.value!.id)
-      .eq("course", id)
-      .maybeSingle();
-    return data;
-  });
-  myReview.value = data.value;
-}
-
-otherReviews.value = useAsyncData(`otherReviewsData:${id}`, async () => {
-  const query = sb
-    .from("reviews")
-    .select(
-      "id, profs, grading, semester, year, workload, body, profiles (username)",
-    )
-    .eq("course", id);
-  if (user.value) {
-    query.neq("user_id", user.value.id);
-  }
-  const { data } = await query;
-  return data;
-}).data.value;
 
 watch(
   user,
