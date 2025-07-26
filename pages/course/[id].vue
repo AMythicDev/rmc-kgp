@@ -7,6 +7,7 @@ if (Array.isArray(id)) id = id[0];
 
 const sb = useSupabaseClient<Database>();
 const user = useSupabaseUser();
+const starSize = useState("starSize", () => 30);
 
 const course = useAsyncData(`course:${id}`, async () => {
   const { data } = await sb
@@ -104,6 +105,13 @@ const addReviewDialog = () => {
   open();
 };
 
+onMounted(() => {
+  const width = window.innerWidth;
+  if (width < 640) starSize.value = 20;
+  else if (width < 768) starSize.value = 25;
+  else starSize.value = 30;
+});
+
 const deletedReview = () => {
   myReview.value = null;
 };
@@ -111,9 +119,11 @@ const deletedReview = () => {
 
 <template>
   <section
-    class="flex bg-white dark:bg-zinc-800 shadow-sm rounded-md h-64 p-12"
+    class="flex flex-col lg:flex-row bg-white dark:bg-zinc-800 shadow-sm rounded-md min-h-64 p-4 lg:p-12"
   >
-    <div class="flex-1 pl-8 border-r border-r-gray-400 dark:border-r-zinc-500">
+    <div
+      class="lg:flex-1 border-b lg:border-b-0 lg:border-r border-gray-400 dark:border-zinc-500 pb-4"
+    >
       <div v-if="course">
         <p class="text-3xl font-extrabold mb-3">{{ course.name }}</p>
         <p class="mb-1">
@@ -126,7 +136,7 @@ const deletedReview = () => {
         </p>
         <p>{{ numReviews }} Reviews</p>
       </div>
-      <div class="pl-8 flex-1" v-else>
+      <div v-else>
         <p class="bg-zinc-700 w-96 h-10 rounded-full mb-3"></p>
         <p class="bg-zinc-700 w-32 h-4 rounded-full mb-2.5"></p>
         <p class="bg-zinc-700 w-72 h-4 rounded-full mb-2.5"></p>
@@ -134,26 +144,30 @@ const deletedReview = () => {
       </div>
     </div>
 
-    <div class="flex items-center pl-8 gap-6 w-[26rem]">
+    <div
+      class="flex items-center pt-8 lg:pt-0 lg:pl-8 gap-6 w-full lg:w-[26rem]"
+    >
       <template v-if="numReviews > 0">
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col w-full items-center">
           <p class="mb-1">Grading</p>
-          <NuxtRating
-            active-color="#7c86ff"
-            v-if="avg_grading"
-            rating-size="30"
-            :rating-value="avg_grading"
-          />
-          <NuxtRating
-            v-else
-            active-color="#7c86ff"
-            inactive-color="#71717b"
-            rating-size="30"
-            :rating-value="0"
-          />
+          <ClientOnly>
+            <NuxtRating
+              active-color="#7c86ff"
+              v-if="avg_grading"
+              :rating-size="starSize"
+              :rating-value="avg_grading"
+            />
+            <NuxtRating
+              v-else
+              active-color="#7c86ff"
+              inactive-color="#71717b"
+              :rating-size="starSize"
+              :rating-value="0"
+            />
+          </ClientOnly>
           <p class="text-center text-sm">{{ avg_grading }} / 5</p>
         </div>
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col w-full items-center">
           <p class="mt-2">Workload</p>
           <ClientOnly>
             <VueSpeedometer
@@ -172,7 +186,7 @@ const deletedReview = () => {
         </div>
       </template>
       <template v-else>
-        <p class="text-gray-400 dark:text-zinc-400 text-2xl text-center">
+        <p class="text-gray-400 dark:text-zinc-400 text-2xl text-center w-full">
           Not enough data to show ratings
         </p>
       </template>

@@ -65,7 +65,7 @@ const signin = async () => {
     </Transition>
   </div>
 
-  <div class="flex justify-center items-center min-h-[calc(100vh-14rem)]">
+  <div class="flex justify-center">
     <form
       class="bg-white dark:bg-zinc-800 w-[30rem] p-12 shadow-md"
       @submit.prevent="signin"

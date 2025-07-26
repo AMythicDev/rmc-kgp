@@ -7,7 +7,7 @@ const signOut = async () => await sb.auth.signOut();
 
 <template>
   <header
-    class="px-10 h-14 fixed top-0 w-full shadow-md flex justify-between items-center bg-white dark:bg-zinc-900"
+    class="px-4 lg:px-10 h-14 fixed top-0 w-full shadow-md flex justify-between items-center bg-white dark:bg-zinc-900"
   >
     <NuxtLink to="/" class="h-full flex gap-1 items-center">
       <span class="font-bold text-2xl text-indigo-400">RMC</span>

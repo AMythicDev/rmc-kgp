@@ -131,7 +131,7 @@ async function submitForm() {
       </div>
     </Transition>
   </div>
-  <div class="flex justify-center items-center">
+  <div class="flex justify-center">
     <form
       class="w-[30rem] p-12 shadow-md bg-white dark:bg-zinc-800"
       @submit.prevent="submitForm"
