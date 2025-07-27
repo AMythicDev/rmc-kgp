@@ -14,6 +14,10 @@ const deleteReview = async () => {
   await sb.from("reviews").delete().eq("id", props.id);
   emit("confirm");
 };
+
+onUnmounted(() => {
+  emit("exit");
+});
 </script>
 
 <template>

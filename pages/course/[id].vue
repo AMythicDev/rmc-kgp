@@ -229,5 +229,7 @@ const deletedReview = () => {
       </ReviewCard>
     </section>
   </section>
-  <ModalsContainer />
+  <ClientOnly>
+    <ModalsContainer />
+  </ClientOnly>
 </template>

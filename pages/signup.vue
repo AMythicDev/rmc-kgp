@@ -95,7 +95,7 @@ async function submitForm() {
     email: email.value,
     password: pw.value,
     options: {
-      emailRedirectTo: "http://127.0.0.1:3000/confirm",
+      emailRedirectTo: `${SITE_URL}/confirm`,
       data: {
         username: un.value,
         institute_email: instiEmail.value,

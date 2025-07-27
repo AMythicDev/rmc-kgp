@@ -37,6 +37,10 @@ const emit = defineEmits<{
   (e: "exit"): void;
 }>();
 
+onUnmounted(() => {
+  emit("exit");
+});
+
 const addReview = async () => {
   const [sem, year] = semester.value.split(" ");
   let yearInt = parseInt(year);

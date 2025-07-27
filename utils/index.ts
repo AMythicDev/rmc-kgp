@@ -1,3 +1,5 @@
+export const SITE_URL = "https://rmc-kgp.netlify.app";
+
 export enum Semester {
   Spring,
   Automn,
