@@ -1,11 +1,11 @@
 <script setup lang="ts">
 const pwVisible = ref(false);
 
-const un = ref("");
-const email = ref("");
-const instiEmail = ref("");
-const pw = ref("");
-const cpw = ref("");
+const un = ref('');
+const email = ref('');
+const instiEmail = ref('');
+const pw = ref('');
+const cpw = ref('');
 const showSuccess = ref(false);
 
 const unErr = ref<null | string>(null);
@@ -17,7 +17,7 @@ const cpwErr = ref<null | string>(null);
 const sb = useSupabaseClient<Database>();
 const user = useSupabaseUser();
 if (user.value) {
-  navigateTo("/confirm");
+  navigateTo('/confirm');
 }
 
 async function validateForm() {
@@ -30,57 +30,68 @@ async function validateForm() {
   cpwErr.value = null;
 
   if (un.value.length == 0) {
-    unErr.value = "Username cannot be empty";
+    unErr.value = 'Username cannot be empty';
     isValid = false;
   } else {
-    let { data } = await sb
-      .from("profiles")
-      .select("user_id")
-      .eq("username", un.value)
-      .maybeSingle();
-    if (data != null) {
-      unErr.value = "The username has already been taken";
+    const unPat = /^[a-zA-Z][a-zA-Z0-9_\-]{4,19}$/;
+    if (!unPat.test(un.value)) {
+      unErr.value = `Invalid username
+      <ul class="list-disc">
+      <li>Must have a length of 4-19</li>
+      <li>Must only contain letters, numbers, - and _ </li>
+      <li>Must start with a letter</li>
+      </ul>`;
       isValid = false;
+    } else {
+      let { data } = await sb
+        .from('profiles')
+        .select('user_id')
+        .eq('username', un.value)
+        .maybeSingle();
+      if (data != null) {
+        unErr.value = 'The username has already been taken';
+        isValid = false;
+      }
     }
   }
   if (email.value.length == 0) {
-    emailErr.value = "Email cannot be empty";
+    emailErr.value = 'Email cannot be empty';
     isValid = false;
   } else {
-    let { data } = await sb.rpc("user_exists", {
+    let { data } = await sb.rpc('user_exists', {
       email: email.value,
     });
     if (data) {
       emailErr.value =
-        "This email address is already associated with a different account";
+        'This email address is already associated with a different account';
       isValid = false;
     }
   }
   if (instiEmail.value.length == 0) {
-    insMailErr.value = "Institute email cannot be empty";
+    insMailErr.value = 'Institute email cannot be empty';
     isValid = false;
   } else {
-    if (!instiEmail.value.endsWith("@kgpian.iitkgp.ac.in")) {
-      insMailErr.value = "Institute email does not seem to be valid";
+    if (!instiEmail.value.endsWith('@kgpian.iitkgp.ac.in')) {
+      insMailErr.value = 'Institute email does not seem to be valid';
       isValid = false;
     }
     let { data } = await sb
-      .from("profiles")
-      .select("user_id")
-      .eq("institute_email", instiEmail.value)
+      .from('profiles')
+      .select('user_id')
+      .eq('institute_email', instiEmail.value)
       .maybeSingle();
     if (data != null) {
       insMailErr.value =
-        "This email address is already associated with a different account";
+        'This email address is already associated with a different account';
       isValid = false;
     }
   }
   if (pw.value.length < 8) {
-    pwErr.value = "Password must be 8 characters long";
+    pwErr.value = 'Password must be 8 characters long';
     isValid = false;
   } else {
     if (cpw.value != pw.value) {
-      cpwErr.value = "Confirm password does not match passowrd";
+      cpwErr.value = 'Confirm password does not match passowrd';
       isValid = false;
     }
   }
@@ -104,12 +115,17 @@ async function submitForm() {
   });
 
   if (!error) {
-    un.value = "";
-    email.value = "";
-    instiEmail.value = "";
-    pw.value = "";
-    cpw.value = "";
-    showSuccess.value = true;
+    un.value = '';
+    email.value = '';
+    instiEmail.value = '';
+    pw.value = '';
+    cpw.value = '';
+    // Toggle comment when email verification works
+    // showSuccess.value = true;
+    // Comment this when email verification works
+    if (!error) {
+      navigateTo('/confirm');
+    }
   } else {
     console.log(error);
   }
@@ -189,12 +205,8 @@ async function submitForm() {
       />
       <label for="pwVisible">Show Password</label>
 
-      <button
-        class="w-full bg-indigo-400 hover:bg-indigo-400/90 text-white transition-colors py-2 cursor-pointer mb-3 shadow-md"
-        type="submit"
-      >
-        Sign Up
-      </button>
+      <Button class="w-full mb-3" type="submit">Sign Up</Button>
+
       <p class="text-sm text-gray-600 text-center">
         Already have an account ?
         <NuxtLink to="/login" class="text-indigo-400 hover:text-indigo-500">

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useModal } from "vue-final-modal";
-import AddReview from "~/components/AddReview.vue";
-import DeleteReview from "~/components/DeleteReview.vue";
+import { useModal } from 'vue-final-modal';
+import AddReview from '~/components/AddReview.vue';
+import DeleteReview from '~/components/DeleteReview.vue';
 
 const { id } = useRoute().params;
 const user = useSupabaseUser();
 
 const emit = defineEmits<{
-  (e: "delete"): void;
-  (e: "edit", review: any): void;
+  (e: 'delete'): void;
+  (e: 'edit', review: any): void;
 }>();
 
 const { my = false, ...props } = defineProps<{
@@ -24,7 +24,7 @@ const editReview = () => {
       user_id: user.value!.id,
       update: props.review,
       onConfirm: (review: any) => {
-        emit("edit", review);
+        emit('edit', review);
         close();
       },
       onExit: () => close(),
@@ -39,7 +39,7 @@ const deleteReview = () => {
     attrs: {
       id: props.review.id,
       onConfirm: () => {
-        emit("delete");
+        emit('delete');
         close();
       },
       onExit: () => close(),
@@ -77,7 +77,7 @@ const deleteReview = () => {
   </div>
   <div class="flex items-center justify-between gap-2">
     <span>Professor(s)</span>
-    {{ review.profs.join(", ") }}
+    {{ review.profs.join(', ') }}
   </div>
   <div class="flex items-center justify-between gap-2">
     <span>Overall Grading</span>

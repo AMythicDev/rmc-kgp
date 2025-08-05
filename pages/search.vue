@@ -3,13 +3,13 @@ const route = useRoute();
 const sb = useSupabaseClient<Database>();
 
 definePageMeta({
-  layout: "home",
+  layout: 'home',
 });
 
 const { data: results } = await useAsyncData(`search`, async () => {
   const { data } = await sb
-    .from("courses")
-    .select("name, code, dept")
+    .from('courses')
+    .select('name, code, dept')
     .or(`code.ilike.%${route.query.term}%, name.ilike.%${route.query.term}%`);
   return data;
 });

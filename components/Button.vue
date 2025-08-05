@@ -6,7 +6,7 @@ const { class: className } = defineProps<{
 
 <template>
   <button
-    :class="`bg-indigo-400 hover:bg-indigo-400/90 h-10 rounded-md text-white ${className}`"
+    :class="`bg-indigo-400 hover:bg-indigo-400/90 h-10 rounded-md text-white cursor-pointer ${className}`"
   >
     <slot />
   </button>

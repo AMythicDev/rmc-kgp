@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import AddReview from "~/components/AddReview.vue";
-import { ModalsContainer, useModal } from "vue-final-modal";
+import AddReview from '~/components/AddReview.vue';
+import { ModalsContainer, useModal } from 'vue-final-modal';
 
 let id = useRoute().params.id;
 if (Array.isArray(id)) id = id[0];
 
 const sb = useSupabaseClient<Database>();
 const user = useSupabaseUser();
-const starSize = useState("starSize", () => 30);
+const starSize = useState('starSize', () => 30);
 
 const course = useAsyncData(`course:${id}`, async () => {
   const { data } = await sb
-    .from("courses")
-    .select("name, code, dept")
-    .eq("code", id)
+    .from('courses')
+    .select('name, code, dept')
+    .eq('code', id)
     .maybeSingle();
   return data;
 }).data;
@@ -21,25 +21,25 @@ const course = useAsyncData(`course:${id}`, async () => {
 const myReview = useAsyncData(`myReviewData:${id}`, async () => {
   if (!user.value) return null;
   const { data } = await sb
-    .from("reviews")
+    .from('reviews')
     .select(
-      "id, profs, grading, semester, year, workload, body, profiles (username)",
+      'id, profs, grading, semester, year, workload, body, profiles (username)',
     )
-    .eq("user_id", user.value!.id)
-    .eq("course", id)
+    .eq('user_id', user.value!.id)
+    .eq('course', id)
     .maybeSingle();
   return data;
 }).data;
 
 const otherReviews = useAsyncData(`otherReviewsData:${id}`, async () => {
   const query = sb
-    .from("reviews")
+    .from('reviews')
     .select(
-      "id, profs, grading, semester, year, workload, body, profiles (username)",
+      'id, profs, grading, semester, year, workload, body, profiles (username)',
     )
-    .eq("course", id);
+    .eq('course', id);
   if (user.value) {
-    query.neq("user_id", user.value.id);
+    query.neq('user_id', user.value.id);
   }
   const { data } = await query;
   return data;
@@ -57,9 +57,9 @@ const numReviews = computed(() => {
 
 const { data: avg_grading } = useAsyncData(`avg_grading:${id}`, async () => {
   const { data } = await sb
-    .from("reviews")
-    .select("course, grading.avg()")
-    .eq("course", id)
+    .from('reviews')
+    .select('course, grading.avg()')
+    .eq('course', id)
     .maybeSingle();
   if (data == null) return 0;
   return data.avg;
@@ -67,9 +67,9 @@ const { data: avg_grading } = useAsyncData(`avg_grading:${id}`, async () => {
 
 const { data: avg_workload } = useAsyncData(`avg_workload:${id}`, async () => {
   const { data } = await sb
-    .from("reviews")
-    .select("course, workload.avg()")
-    .eq("course", id)
+    .from('reviews')
+    .select('course, workload.avg()')
+    .eq('course', id)
     .maybeSingle();
   if (data == null) return 0;
   return data.avg;
@@ -86,7 +86,7 @@ watch(
 const goToLogin = () => {
   const redirectInfo = useSupabaseCookieRedirect();
   redirectInfo.path.value = `/course/${id}`;
-  navigateTo("/login");
+  navigateTo('/login');
 };
 
 const addReviewDialog = () => {

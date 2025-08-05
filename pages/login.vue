@@ -1,6 +1,6 @@
 <script setup lang="ts">
-const email = ref("");
-const pw = ref("");
+const email = ref('');
+const pw = ref('');
 const pwVisible = ref(false);
 const invalidLogin = ref(false);
 
@@ -9,7 +9,7 @@ watch(
   user,
   () => {
     if (user.value) {
-      navigateTo("/confirm");
+      navigateTo('/confirm');
     }
   },
   { immediate: true },
@@ -24,11 +24,11 @@ function validateForm() {
   pwErr.value = null;
 
   if (email.value.length == 0) {
-    emailErr.value = "Email cannot be empty";
+    emailErr.value = 'Email cannot be empty';
     isValid = false;
   }
   if (pw.value.length < 8) {
-    pwErr.value = "Password must be 8 characters long";
+    pwErr.value = 'Password must be 8 characters long';
     isValid = false;
   }
 
@@ -43,7 +43,7 @@ const signin = async () => {
     password: pw.value,
   });
   if (!error) {
-    navigateTo("/confirm");
+    navigateTo('/confirm');
   } else {
     invalidLogin.value = true;
   }
@@ -95,12 +95,7 @@ const signin = async () => {
         class="mb-6 mr-1"
         id="pwVisible"
       /><label for="pwVisible">Show Password</label>
-      <button
-        class="w-full bg-indigo-400 hover:bg-indigo-400/90 text-white transition-colors py-2 cursor-pointer mb-3 shadow-md"
-        type="submit"
-      >
-        Sign In
-      </button>
+      <Button class="w-full mb-3" type="submit">Sign In</Button>
       <p class="text-sm text-gray-600 text-center">
         Don't have an account?
         <NuxtLink to="/signup" class="text-indigo-400 hover:text-indigo-500"

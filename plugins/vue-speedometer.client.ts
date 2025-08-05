@@ -1,5 +1,5 @@
-import VueSpeedometer from "vue-speedometer";
+import VueSpeedometer from 'vue-speedometer';
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.component("VueSpeedometer", VueSpeedometer);
+  nuxtApp.vueApp.component('VueSpeedometer', VueSpeedometer);
 });

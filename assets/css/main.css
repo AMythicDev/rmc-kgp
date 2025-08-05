@@ -1,12 +1,12 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @font-face {
   font-family: Geist;
-  src: url("public/Geist_variable.ttf") format("ttf");
+  src: url('public/Geist_variable.ttf') format('ttf');
 }
 
 @theme {
-  --font-display: "Geist", "sans-serif";
+  --font-display: 'Geist', 'sans-serif';
 }
 
 body {

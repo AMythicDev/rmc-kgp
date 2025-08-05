@@ -2,13 +2,13 @@
 const sb = useSupabaseClient<Database>();
 
 definePageMeta({
-  layout: "home",
+  layout: 'home',
 });
 
-const { data: popular } = await useAsyncData("popular", async () => {
+const { data: popular } = await useAsyncData('popular', async () => {
   const { data } = await sb
-    .from("courses")
-    .select("name, code, dept")
+    .from('courses')
+    .select('name, code, dept')
     .limit(15);
   return data;
 });

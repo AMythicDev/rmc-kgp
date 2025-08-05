@@ -1,4 +1,4 @@
-export const SITE_URL = "https://rmc-kgp.netlify.app";
+export const SITE_URL = 'https://rmc-kgp.netlify.app';
 
 export enum Semester {
   Spring,
@@ -6,9 +6,9 @@ export enum Semester {
 }
 
 export function semesterToString(s: Semester): string {
-  if (s == 0) return "Spring";
-  else if (s == 1) return "Automn";
-  else throw "invalid value for semester";
+  if (s == 0) return 'Spring';
+  else if (s == 1) return 'Automn';
+  else throw 'invalid value for semester';
 }
 
 export function startSemesterYear(

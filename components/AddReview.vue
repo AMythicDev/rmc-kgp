@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { VueFinalModal } from "vue-final-modal";
+import { VueFinalModal } from 'vue-final-modal';
 
 const { update, ...props } = defineProps<{
   course_code: string;
@@ -8,10 +8,10 @@ const { update, ...props } = defineProps<{
 }>();
 
 const sb = useSupabaseClient<Database>();
-const profs = ref(update ? update.profs : "");
+const profs = ref(update ? update.profs : '');
 const grading = ref(update ? update.grading : 0);
 const workload = ref(update ? update.workload : 5);
-const body = ref(update ? update.body : "");
+const body = ref(update ? update.body : '');
 
 const date = new Date();
 const month = date.getMonth();
@@ -33,25 +33,25 @@ for (let i = 0; i < 6; i++) {
 const semester = ref(sem_options[0]);
 
 const emit = defineEmits<{
-  (e: "confirm", review: any): void;
-  (e: "exit"): void;
+  (e: 'confirm', review: any): void;
+  (e: 'exit'): void;
 }>();
 
 onUnmounted(() => {
-  emit("exit");
+  emit('exit');
 });
 
 const addReview = async () => {
-  const [sem, year] = semester.value.split(" ");
+  const [sem, year] = semester.value.split(' ');
   let yearInt = parseInt(year);
 
   let { data } = await sb
-    .from("reviews")
+    .from('reviews')
     .upsert({
       id: update ? update.id : undefined,
       course: props.course_code,
       user_id: props.user_id,
-      profs: profs.value.split(","),
+      profs: profs.value.split(','),
       semester: sem,
       year: yearInt,
       grading: grading.value,
@@ -59,10 +59,10 @@ const addReview = async () => {
       body: body.value,
     })
     .select(
-      "id, profs, grading, semester, year, workload, body, profiles (username)",
+      'id, profs, grading, semester, year, workload, body, profiles (username)',
     )
     .single();
-  emit("confirm", data);
+  emit('confirm', data);
 };
 </script>
 

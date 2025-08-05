@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { VueFinalModal } from "vue-final-modal";
+import { VueFinalModal } from 'vue-final-modal';
 
 const props = defineProps<{
   id: number;
 }>();
 
 const emit = defineEmits<{
-  (e: "confirm" | "exit"): void;
+  (e: 'confirm' | 'exit'): void;
 }>();
 
 const deleteReview = async () => {
   const sb = useSupabaseClient<Database>();
-  await sb.from("reviews").delete().eq("id", props.id);
-  emit("confirm");
+  await sb.from('reviews').delete().eq('id', props.id);
+  emit('confirm');
 };
 
 onUnmounted(() => {
-  emit("exit");
+  emit('exit');
 });
 </script>
 
